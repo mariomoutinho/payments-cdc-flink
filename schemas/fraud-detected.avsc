@@ -1,0 +1,71 @@
+{
+  "type": "record",
+  "name": "FraudDetected",
+  "namespace": "com.bootcamp.payments.fraud",
+  "fields": [
+    {
+      "name": "transaction_id",
+      "type": "long"
+    },
+    {
+      "name": "account_id",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "card_id",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "confluent:tags": [
+        "PCI"
+      ],
+      "doc": "Synthetic card token only; never PAN or CVV."
+    },
+    {
+      "name": "first_transaction_id",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "customer_name",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "confluent:tags": [
+        "PII"
+      ]
+    },
+    {
+      "name": "risk_level",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "money",
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 15,
+          "scale": 2
+        }
+      ],
+      "default": null
+    }
+  ]
+}

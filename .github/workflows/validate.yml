@@ -6,7 +6,7 @@ on:
       - '!README.md'
       - '!evidence/**'
       - '!docs/**'
-      - '!schemas/**'
+      - '!schemas/alerts-*.avsc'
   workflow_dispatch:
 defaults:
   run:
@@ -22,15 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -r requirements.txt
       - name: Configure isolated lab
         run: |
           python -c "import secrets; open('.env','w').write('POSTGRES_PASSWORD='+secrets.token_hex(24)+'\n')"
           mkdir -p artifacts
-      - name: Start services
-        run: docker compose up -d --build --wait --wait-timeout 240
-      - name: Run end to end validation
-        run: python scripts/validate.py 2>&1 | tee artifacts/validation.txt
+      - name: Run setup and end to end validation
+        run: ./setup.sh
       - name: Capture diagnostics
         if: always()
         run: |
@@ -38,14 +35,14 @@ jobs:
           docker compose logs --no-color jobmanager taskmanager > artifacts/flink.log
           curl -sf localhost:8082/jobs/overview > artifacts/jobs.json || true
           cp -r schemas artifacts/schemas
+      - name: Teardown
+        if: always()
+        run: ./teardown.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: pipeline-evidence
           path: artifacts/
-      - name: Teardown
-        if: always()
-        run: docker compose down -v --remove-orphans
   terraform:
     runs-on: ubuntu-latest
     steps:
