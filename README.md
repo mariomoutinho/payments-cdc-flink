@@ -3,6 +3,7 @@
 O domínio ativo das evoluções é telemetria IoT: dispositivos → CDC → Kafka → Flink SQL → dados enriquecidos Avro e detecção de anomalias. O laboratório de pagamentos abaixo permanece como regressão e histórico de evidências.
 
 1. [Domínio IoT](docs/etapas/01-iot.md): CDC próprio, enriquecimento Avro e velocidade de leituras.
+2. [Regra térmica](docs/etapas/02-regra-termica.md): média >=80°C por 5 minutos, com controles negativos.
 
 `./setup.sh` executa os dois laboratórios. `./teardown.sh` remove os recursos locais. Saídas da evolução ficam em `artifacts/iot-validation.txt`, disponíveis também no artefato do Actions. Novas evidências devem ser distinguidas das evidências históricas de pagamentos abaixo.
 

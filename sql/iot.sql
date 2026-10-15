@@ -45,6 +45,13 @@ CREATE TABLE iot_velocity_alerts (
  'connector'='upsert-kafka','topic'='iot.alerts.velocity',
  'properties.bootstrap.servers'='kafka:29092','key.format'='json','value.format'='json'
 );
+CREATE TABLE iot_thermal_alerts (
+ device_id STRING,window_start TIMESTAMP(3),window_end TIMESTAMP(3),
+ sample_count BIGINT,avg_temperature DOUBLE
+) WITH (
+ 'connector'='kafka','topic'='iot.alerts.thermal',
+ 'properties.bootstrap.servers'='kafka:29092','format'='json'
+);
 CREATE VIEW iot_created AS
  SELECT `after`.reading_id AS reading_id,`after`.device_id AS device_id,
  `after`.temperature_c AS temperature_c,`after`.battery_pct AS battery_pct,event_time
@@ -62,4 +69,9 @@ EXECUTE STATEMENT SET BEGIN
  SELECT t.reading_id,t.device_id,t.temperature_c,t.battery_pct,t.observed_at,d.site_id,d.criticality
  FROM iot_telemetry t JOIN iot_devices d ON t.device_id=d.device_id;
  INSERT INTO iot_velocity_alerts SELECT reading_id,device_id,first_reading_id FROM iot_velocity;
+ INSERT INTO iot_thermal_alerts
+ SELECT device_id,window_start,window_end,COUNT(*),AVG(CAST(temperature_c AS DOUBLE))
+ FROM TABLE(TUMBLE(TABLE iot_created,DESCRIPTOR(event_time),INTERVAL '5' MINUTE))
+ GROUP BY device_id,window_start,window_end
+ HAVING COUNT(*)>=2 AND AVG(CAST(temperature_c AS DOUBLE))>=80.0;
 END;

@@ -1,0 +1,100 @@
+[
+  {
+    "key": {
+      "reading_id": 3
+    },
+    "value": {
+      "reading_id": 3,
+      "device_id": "sensor-hot",
+      "temperature_c": 95,
+      "battery_pct": 20,
+      "observed_at": 1735689709000,
+      "site_id": "factory-a",
+      "criticality": "high"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 2
+    },
+    "value": {
+      "reading_id": 2,
+      "device_id": "sensor-hot",
+      "temperature_c": 90,
+      "battery_pct": 25,
+      "observed_at": 1735689670000,
+      "site_id": "factory-a",
+      "criticality": "high"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 1
+    },
+    "value": {
+      "reading_id": 1,
+      "device_id": "sensor-hot",
+      "temperature_c": 85,
+      "battery_pct": 30,
+      "observed_at": 1735689650000,
+      "site_id": "factory-a",
+      "criticality": "high"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 5
+    },
+    "value": {
+      "reading_id": 5,
+      "device_id": "sensor-safe",
+      "temperature_c": 24,
+      "battery_pct": 95,
+      "observed_at": 1735689750000,
+      "site_id": "factory-b",
+      "criticality": "low"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 6
+    },
+    "value": {
+      "reading_id": 6,
+      "device_id": "sensor-safe",
+      "temperature_c": 23,
+      "battery_pct": 94,
+      "observed_at": 1735689781000,
+      "site_id": "factory-b",
+      "criticality": "low"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 4
+    },
+    "value": {
+      "reading_id": 4,
+      "device_id": "sensor-safe",
+      "temperature_c": 22,
+      "battery_pct": 95,
+      "observed_at": 1735689720000,
+      "site_id": "factory-b",
+      "criticality": "low"
+    }
+  },
+  {
+    "key": {
+      "reading_id": 7
+    },
+    "value": {
+      "reading_id": 7,
+      "device_id": "clock",
+      "temperature_c": 20,
+      "battery_pct": 100,
+      "observed_at": 1735690800000,
+      "site_id": "test",
+      "criticality": "low"
+    }
+  }
+]

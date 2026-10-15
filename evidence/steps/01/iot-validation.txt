@@ -1,0 +1,4 @@
+IOT: Avro key/value enriched with factory-a/high; 7 readings observed
+IOT VELOCITY: [{"key": {"reading_id": 3}, "value": {"reading_id": 3, "device_id": "sensor-hot", "first_reading_id": 1}}]
+IOT: UPDATE and DELETE propagated; connector RUNNING
+PASS: IoT CDC, Avro enrichment and velocity detection

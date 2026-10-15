@@ -31,11 +31,12 @@ def wait_http(url, timeout=180):
         except requests.RequestException:
             time.sleep(2)
     raise TimeoutError(url)
-def consume(topic, predicate, timeout=120, avro=False, avro_key=False):
+def consume(topic, predicate, timeout=120, avro=False, avro_key=False, settle_seconds=0):
     c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False,'broker.address.family':'v4'})
-    c.subscribe([topic]); rows=[]; end=time.monotonic()+timeout
+    c.subscribe([topic]); rows=[]; end=time.monotonic()+timeout; ready_at=None
     try:
         while time.monotonic()<end:
+            if ready_at is not None and time.monotonic()>=ready_at: return rows
             msg=c.poll(1)
             if msg is None: continue
             if msg.error(): raise RuntimeError(msg.error())
@@ -55,7 +56,9 @@ def consume(topic, predicate, timeout=120, avro=False, avro_key=False):
                     key=fastavro.schemaless_reader(io.BytesIO(key_bytes[5:]),key_schema)
                 else: key=json.loads(msg.key())
             rows.append({'key':key,'value':value})
-            if predicate(rows): return rows
+            if predicate(rows):
+                if not settle_seconds:return rows
+                if ready_at is None:ready_at=time.monotonic()+settle_seconds
     finally: c.close()
     (ART/('timeout-'+topic+'.json')).write_text(json.dumps(rows,indent=2,default=str))
     raise AssertionError(f'Timeout on {topic}: received {len(rows)} records; see timeout artifact')

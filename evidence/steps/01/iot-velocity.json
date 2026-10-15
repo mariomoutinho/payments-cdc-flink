@@ -1,0 +1,12 @@
+[
+  {
+    "key": {
+      "reading_id": 3
+    },
+    "value": {
+      "reading_id": 3,
+      "device_id": "sensor-hot",
+      "first_reading_id": 1
+    }
+  }
+]

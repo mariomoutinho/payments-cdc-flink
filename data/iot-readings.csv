@@ -1,0 +1,10 @@
+reading_id,device_id,temperature_c,battery_pct,seconds
+8,sensor-spike,100,80,40
+1,sensor-hot,85,30,50
+2,sensor-hot,90,25,70
+3,sensor-hot,95,20,109
+4,sensor-safe,22,95,120
+9,sensor-spike,20,80,140
+5,sensor-safe,24,95,150
+6,sensor-safe,23,94,181
+7,clock,20,100,1200
