@@ -1,0 +1,1 @@
+{"jobs":[{"jid":"a6942d63d797d8156953a2f55c321559","name":"payments-enrichment-and-fraud","start-time":1792076481652,"end-time":-1,"duration":8995,"state":"RUNNING","last-modification":1792076482987,"tasks":{"running":8,"canceling":0,"canceled":0,"total":8,"created":0,"scheduled":0,"deploying":0,"reconciling":0,"finished":0,"initializing":0,"failed":0}}]}

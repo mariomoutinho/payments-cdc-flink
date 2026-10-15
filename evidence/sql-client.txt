@@ -1,0 +1,92 @@
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+WARNING: Unknown module: jdk.compiler specified to --add-exports
+Oct 15, 2026 3:01:17 PM org.jline.utils.Log logr
+WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
+[34;1m[INFO] Executing SQL from file.[0m
+
+Command history file path: /opt/flink/.flink-sql-history
+Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> 
+> CREATE TABLE accounts (
+>  account_id BIGINT, customer_name STRING, risk_level STRING,
+>  PRIMARY KEY (account_id) NOT ENFORCED
+> ) WITH (
+>  'connector'='kafka', 'topic'='payments.public.accounts',
+>  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-accounts',
+>  'scan.startup.mode'='earliest-offset', 'format'='debezium-json'
+> )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> CREATE TABLE transactions (
+>  transaction_id BIGINT, account_id BIGINT, card_id STRING, amount_cents BIGINT,
+>  occurred_at BIGINT, PRIMARY KEY (transaction_id) NOT ENFORCED
+> ) WITH (
+>  'connector'='kafka', 'topic'='payments.public.transactions',
+>  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-transactions',
+>  'scan.startup.mode'='earliest-offset', 'format'='debezium-json'
+> )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> -- Segunda leitura do envelope bruto: append-only para MATCH_RECOGNIZE.
+> CREATE TABLE transaction_events (
+>  `after` ROW<transaction_id BIGINT, account_id BIGINT, card_id STRING,
+>              amount_cents BIGINT, occurred_at BIGINT>,
+>  op STRING,
+>  event_time AS TO_TIMESTAMP_LTZ(`after`.occurred_at, 3),
+>  WATERMARK FOR event_time AS event_time - INTERVAL '2' SECOND
+> ) WITH (
+>  'connector'='kafka', 'topic'='payments.public.transactions',
+>  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-events',
+>  'scan.startup.mode'='earliest-offset', 'format'='json'
+> )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> CREATE TABLE enriched_transactions (
+>  transaction_id BIGINT, account_id BIGINT, card_id STRING, amount_cents BIGINT,
+>  occurred_at BIGINT, customer_name STRING, risk_level STRING,
+>  PRIMARY KEY (transaction_id) NOT ENFORCED
+> ) WITH (
+>  'connector'='upsert-kafka', 'topic'='payments.enriched',
+>  'properties.bootstrap.servers'='kafka:29092',
+>  'key.format'='json', 'value.format'='json'
+> )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> CREATE TABLE fraud_alerts (
+>  transaction_id BIGINT, account_id BIGINT, card_id STRING,
+>  first_transaction_id BIGINT, customer_name STRING, risk_level STRING,
+>  PRIMARY KEY (transaction_id) NOT ENFORCED
+> ) WITH (
+>  'connector'='upsert-kafka', 'topic'='payments.alerts',
+>  'properties.bootstrap.servers'='kafka:29092', 'key.format'='json',
+>  'value.format'='avro-confluent',
+>  'value.avro-confluent.url'='http://registry:8081',
+>  'value.avro-confluent.subject'='payments.alerts-value'
+> )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> CREATE VIEW suspicious_sequences AS
+>  SELECT * FROM created_transactions
+>  MATCH_RECOGNIZE (
+>   PARTITION BY card_id ORDER BY event_time
+>   MEASURES C.transaction_id AS transaction_id, C.account_id AS account_id,
+>            A.transaction_id AS first_transaction_id
+>   ONE ROW PER MATCH
+>   AFTER MATCH SKIP TO NEXT ROW
+>   PATTERN (A B C) WITHIN INTERVAL '60' SECOND
+>   DEFINE A AS TRUE, B AS TRUE, C AS TRUE
+>  )[34;1m[INFO] Execute statement succeeded.[0m
+
+Flink SQL> [34;1m[INFO] Submitting SQL update statement to the cluster...[0m
+[34;1m[INFO] SQL update statement has been successfully submitted to the cluster:[0m
+Job ID: a6942d63d797d8156953a2f55c321559
+
+
+Flink SQL> 
+Shutting down the session...
+done.

@@ -1,0 +1,7 @@
+NAME                               IMAGE                                   COMMAND                  SERVICE       CREATED          STATUS                    PORTS
+payments-cdc-flink-connect-1       quay.io/debezium/connect:2.7.3.Final    "/docker-entrypoint.…"   connect       47 seconds ago   Up 36 seconds             8778/tcp, 127.0.0.1:8083->8083/tcp, 9092/tcp
+payments-cdc-flink-jobmanager-1    payments-cdc-flink-jobmanager           "/docker-entrypoint.…"   jobmanager    47 seconds ago   Up 47 seconds             6123/tcp, 127.0.0.1:8082->8081/tcp
+payments-cdc-flink-kafka-1         confluentinc/cp-kafka:7.7.1             "/etc/confluent/dock…"   kafka         47 seconds ago   Up 47 seconds (healthy)   127.0.0.1:9092->9092/tcp
+payments-cdc-flink-postgres-1      postgres:16.6                           "docker-entrypoint.s…"   postgres      47 seconds ago   Up 47 seconds (healthy)   5432/tcp
+payments-cdc-flink-registry-1      confluentinc/cp-schema-registry:7.7.1   "/etc/confluent/dock…"   registry      47 seconds ago   Up 36 seconds             127.0.0.1:8081->8081/tcp
+payments-cdc-flink-taskmanager-1   payments-cdc-flink-taskmanager          "/docker-entrypoint.…"   taskmanager   47 seconds ago   Up 47 seconds             6123/tcp, 8081/tcp

@@ -1,0 +1,368 @@
+[
+  {
+    "key": {
+      "transaction_id": 1
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 1,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 1000,
+        "occurred_at": 1735689650000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26355296\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26355296,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483937,
+      "ts_us": 1792076483937447,
+      "ts_ns": 1792076483937447363
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 2
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 2,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 2000,
+        "occurred_at": 1735689670000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26355560\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26355560,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483937,
+      "ts_us": 1792076483937723,
+      "ts_ns": 1792076483937723729
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 3
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 3,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 3000,
+        "occurred_at": 1735689709000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26355728\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26355728,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483937,
+      "ts_us": 1792076483937902,
+      "ts_ns": 1792076483937902959
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 4
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 4,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 4000,
+        "occurred_at": 1735689710000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26355896\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26355896,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483938,
+      "ts_us": 1792076483938071,
+      "ts_ns": 1792076483938071754
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 5
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 5,
+        "account_id": 2,
+        "card_id": "card-safe",
+        "amount_cents": 500,
+        "occurred_at": 1735689720000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26356064\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26356064,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483938,
+      "ts_us": 1792076483938223,
+      "ts_ns": 1792076483938223943
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 6
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 6,
+        "account_id": 2,
+        "card_id": "card-safe",
+        "amount_cents": 500,
+        "occurred_at": 1735689750000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26356232\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26356232,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483938,
+      "ts_us": 1792076483938388,
+      "ts_ns": 1792076483938388080
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 7
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 7,
+        "account_id": 2,
+        "card_id": "card-safe",
+        "amount_cents": 500,
+        "occurred_at": 1735689781000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26356400\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26356400,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483938,
+      "ts_us": 1792076483938545,
+      "ts_ns": 1792076483938545427
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 8
+    },
+    "value": {
+      "before": null,
+      "after": {
+        "transaction_id": 8,
+        "account_id": 2,
+        "card_id": "watermark",
+        "amount_cents": 1,
+        "occurred_at": 1735689900000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076483725,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26355296\",\"26356568\"]",
+        "ts_us": 1792076483725375,
+        "ts_ns": 1792076483725375000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 752,
+        "lsn": 26356568,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "c",
+      "ts_ms": 1792076483938,
+      "ts_us": 1792076483938701,
+      "ts_ns": 1792076483938701843
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 1
+    },
+    "value": {
+      "before": {
+        "transaction_id": 1,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 1000,
+        "occurred_at": 1735689650000
+      },
+      "after": {
+        "transaction_id": 1,
+        "account_id": 1,
+        "card_id": "card-fraud",
+        "amount_cents": 7777,
+        "occurred_at": 1735689650000
+      },
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076485801,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26356896\",\"26635416\"]",
+        "ts_us": 1792076485801163,
+        "ts_ns": 1792076485801163000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 764,
+        "lsn": 26635416,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "u",
+      "ts_ms": 1792076485962,
+      "ts_us": 1792076485962407,
+      "ts_ns": 1792076485962407267
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 8
+    },
+    "value": {
+      "before": {
+        "transaction_id": 8,
+        "account_id": 2,
+        "card_id": "watermark",
+        "amount_cents": 1,
+        "occurred_at": 1735689900000
+      },
+      "after": null,
+      "source": {
+        "version": "2.7.3.Final",
+        "connector": "postgresql",
+        "name": "payments",
+        "ts_ms": 1792076485801,
+        "snapshot": "false",
+        "db": "payments",
+        "sequence": "[\"26635632\",\"26635632\"]",
+        "ts_us": 1792076485801425,
+        "ts_ns": 1792076485801425000,
+        "schema": "public",
+        "table": "transactions",
+        "txId": 765,
+        "lsn": 26635632,
+        "xmin": null
+      },
+      "transaction": null,
+      "op": "d",
+      "ts_ms": 1792076485962,
+      "ts_us": 1792076485962810,
+      "ts_ns": 1792076485962810144
+    }
+  }
+]

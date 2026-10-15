@@ -1,0 +1,3 @@
+$ terraform -chdir=infra/cloud validate -no-color
+Success! The configuration is valid.
+

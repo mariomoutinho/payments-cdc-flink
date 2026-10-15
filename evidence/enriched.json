@@ -1,0 +1,140 @@
+[
+  {
+    "key": {
+      "transaction_id": 1
+    },
+    "value": {
+      "transaction_id": 1,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "amount_cents": 1000,
+      "occurred_at": 1735689650000,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 2
+    },
+    "value": {
+      "transaction_id": 2,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "amount_cents": 2000,
+      "occurred_at": 1735689670000,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 3
+    },
+    "value": {
+      "transaction_id": 3,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "amount_cents": 3000,
+      "occurred_at": 1735689709000,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 4
+    },
+    "value": {
+      "transaction_id": 4,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "amount_cents": 4000,
+      "occurred_at": 1735689710000,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 5
+    },
+    "value": {
+      "transaction_id": 5,
+      "account_id": 2,
+      "card_id": "card-safe",
+      "amount_cents": 500,
+      "occurred_at": 1735689720000,
+      "customer_name": "Bruno Sintetico",
+      "risk_level": "low"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 6
+    },
+    "value": {
+      "transaction_id": 6,
+      "account_id": 2,
+      "card_id": "card-safe",
+      "amount_cents": 500,
+      "occurred_at": 1735689750000,
+      "customer_name": "Bruno Sintetico",
+      "risk_level": "low"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 7
+    },
+    "value": {
+      "transaction_id": 7,
+      "account_id": 2,
+      "card_id": "card-safe",
+      "amount_cents": 500,
+      "occurred_at": 1735689781000,
+      "customer_name": "Bruno Sintetico",
+      "risk_level": "low"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 8
+    },
+    "value": {
+      "transaction_id": 8,
+      "account_id": 2,
+      "card_id": "watermark",
+      "amount_cents": 1,
+      "occurred_at": 1735689900000,
+      "customer_name": "Bruno Sintetico",
+      "risk_level": "low"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 1
+    },
+    "value": null
+  },
+  {
+    "key": {
+      "transaction_id": 1
+    },
+    "value": {
+      "transaction_id": 1,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "amount_cents": 7777,
+      "occurred_at": 1735689650000,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 8
+    },
+    "value": null
+  }
+]

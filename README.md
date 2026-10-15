@@ -2,7 +2,7 @@
 
 Laboratório reproduzível: **PostgreSQL → Debezium CDC → Kafka → Flink SQL → Kafka + Avro/Schema Registry**.
 
-Estado: implementação local em validação pelo GitHub Actions. **Não executado no Confluent Cloud**: nenhuma conta/chave foi fornecida. Não apresentar esta versão como evidência de execução na nuvem. As identidades locais são roles PostgreSQL; Kafka local usa PLAINTEXT em rede de laboratório, sem RBAC. A exigência de identidades Kafka distintas na nuvem permanece pendente.
+**Estado: pipeline local executado e aprovado no [GitHub Actions](https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38756328476).** **Não executado no Confluent Cloud**: nenhuma conta/chave foi fornecida. Não apresentar esta versão como evidência de execução na nuvem. As identidades locais são roles PostgreSQL; Kafka local usa PLAINTEXT em rede de laboratório, sem RBAC. A exigência de identidades Kafka distintas na nuvem permanece pendente.
 
 ## Subir do zero
 
@@ -59,7 +59,7 @@ Referências oficiais: [CDC Cloud V2](https://docs.confluent.io/cloud/current/co
 
 ## Custo e encerramento
 
-Nenhum recurso Confluent Cloud foi criado: custo de serviço Confluent desta execução **US$ 0**. Isso não é uma cotação para executar na nuvem. O laboratório consome CPU, RAM, disco e rede da máquina ou runner; não há fatura de infraestrutura disponível. O uso de Actions pode consumir a franquia da conta: consulte Billing/Usage para o valor efetivamente cobrado. Não se deve inventar um custo Cloud sem medir.
+Nenhum recurso Confluent Cloud foi criado: custo de serviço Confluent desta execução **US$ 0**. Isso não é uma cotação para executar na nuvem. O laboratório consome CPU, RAM, disco e rede da máquina ou runner; não há fatura de infraestrutura disponível. Nesta execução, os dois jobs usaram runner padrão Ubuntu em repositório público: a API de tempo do Actions informou **0 ms faturáveis** e duração total de **129 segundos**. O uso desses runners públicos é [gratuito segundo o GitHub](https://docs.github.com/en/billing/concepts/product-billing/github-actions). Não foi consultada uma fatura de armazenamento de artefatos; estes números não incluem energia da máquina do usuário nem estimam uma futura implantação Cloud. Confira a [resposta original da API](evidence/timing.json).
 
 Para remover o laboratório e os dados, execute **dentro deste repositório**:
 
@@ -70,6 +70,119 @@ rm -f .env
 
 Esse comando remove o volume PostgreSQL do projeto. Imagens Docker e cache de build continuam no host. Nenhum recurso de outros projetos deve ser removido. Na automação o teardown ocorre em `if: always()`.
 
-## Evidências
+## Evidências reais da execução
 
-As saídas reais serão adicionadas após o término da execução integrada. Se o workflow falhar, consulte os artefatos de diagnóstico: falha não é evidência de pipeline funcionando. Esta seção não declara execução bem-sucedida antecipadamente.
+Execução de **15/10/2026, concluída às 12:01:37 (America/Sao_Paulo)**. Commit de código testado: `35516066b5a9695a72413ebb0c514d97a62b4e9e`. [Workflow aprovado com integração e Terraform](https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38756328476). Documentação e cópias das evidências foram adicionadas após esse teste, sem alterar o código testado.
+
+O comando executado no runner foi `python scripts/validate.py 2>&1 | tee artifacts/validation.txt`. Abaixo estão trechos literais da saída, salvo a remoção das sequências ANSI de cor. O [log completo](evidence/validation.txt), [serviços](evidence/services.txt), [SQL client](evidence/sql-client.txt) e [metadados](evidence/run.json) estão versionados; não dependem da retenção temporária de artefatos do Actions.
+
+### 1. Fundação e acesso
+
+```text
+FOUNDATION: distinct writer, reader and CDC roles
+     grantee     | privilege_type 
+-----------------+----------------
+ payments_cdc    | SELECT
+ payments_reader | SELECT
+ payments_writer | DELETE
+ payments_writer | INSERT
+ payments_writer | SELECT
+ payments_writer | UPDATE
+(6 rows)
+
+
+ACCESS: reader INSERT denied by PostgreSQL
+CDC: connector and task RUNNING
+```
+
+O teste de negação usa `SET ROLE payments_reader` no PostgreSQL; não comprova ACL de Kafka. O módulo Cloud teve esta saída real, sem `apply`:
+
+```text
+$ terraform -chdir=infra/cloud validate -no-color
+Success! The configuration is valid.
+```
+
+### 2. Contrato em uso
+
+```text
+CONTRACT: optional merchant field accepted: {"id": 2}
+CONTRACT: incompatible transaction_id type rejected: HTTP 409
+```
+
+A mensagem de alerta foi lida de Kafka, seu ID de schema foi resolvido no Registry e o corpo foi desserializado como Avro pelo consumidor do teste. Os schemas reais estão em [v1](schemas/alerts-v1.avsc), [v2 compatível](schemas/alerts-v2.avsc) e [mudança rejeitada](schemas/alerts-incompatible.avsc).
+
+### 3. CDC: insert, update e delete
+
+```text
+CDC EVENT c: {"key": {"transaction_id": 1}, "value": {"before": null, "after": {"transaction_id": 1, "account_id": 1, "card_id": "card-fraud", "amount_cents": 1000, "occurred_at": 1735689650000}, "source": {"version": "2.7.3.Final", "connector": "postgresql", "name": "payments", "ts_ms": 1792076483725, "snapshot": "false", "db": "payments", "sequence": "[\"26355296\",\"26355296\"]", "ts_us": 1792076483725375, "ts_ns": 1792076483725375000, "schema": "public", "table": "transactions", "txId": 752, "lsn": 26355296, "xmin": null}, "transaction": null, "op": "c", "ts_ms": 1792076483937, "ts_us": 1792076483937447, "ts_ns": 1792076483937447363}}
+CDC EVENT u: {"key": {"transaction_id": 1}, "value": {"before": {"transaction_id": 1, "account_id": 1, "card_id": "card-fraud", "amount_cents": 1000, "occurred_at": 1735689650000}, "after": {"transaction_id": 1, "account_id": 1, "card_id": "card-fraud", "amount_cents": 7777, "occurred_at": 1735689650000}, "source": {"version": "2.7.3.Final", "connector": "postgresql", "name": "payments", "ts_ms": 1792076485801, "snapshot": "false", "db": "payments", "sequence": "[\"26356896\",\"26635416\"]", "ts_us": 1792076485801163, "ts_ns": 1792076485801163000, "schema": "public", "table": "transactions", "txId": 764, "lsn": 26635416, "xmin": null}, "transaction": null, "op": "u", "ts_ms": 1792076485962, "ts_us": 1792076485962407, "ts_ns": 1792076485962407267}}
+CDC EVENT d: {"key": {"transaction_id": 8}, "value": {"before": {"transaction_id": 8, "account_id": 2, "card_id": "watermark", "amount_cents": 1, "occurred_at": 1735689900000}, "after": null, "source": {"version": "2.7.3.Final", "connector": "postgresql", "name": "payments", "ts_ms": 1792076485801, "snapshot": "false", "db": "payments", "sequence": "[\"26635632\",\"26635632\"]", "ts_us": 1792076485801425, "ts_ns": 1792076485801425000, "schema": "public", "table": "transactions", "txId": 765, "lsn": 26635632, "xmin": null}, "transaction": null, "op": "d", "ts_ms": 1792076485962, "ts_us": 1792076485962810, "ts_ns": 1792076485962810144}}
+```
+
+Os eventos completos também estão em [cdc.json](evidence/cdc.json). O update levou `amount_cents` de 1000 a 7777; o delete tem `after: null`.
+
+### 4. Enriquecimento e fraude
+
+```text
+CDC: schemaless Debezium envelope verified
+FRAUD: overlapping rolling 60s alerts crossing clock-minute boundary
+[
+  {
+    "key": {
+      "transaction_id": 3
+    },
+    "value": {
+      "transaction_id": 3,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "first_transaction_id": 1,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 4
+    },
+    "value": {
+      "transaction_id": 4,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "first_transaction_id": 2,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  }
+]
+ENRICHMENT: account joined; UPDATE propagated; DELETE tombstone propagated
+```
+
+As compras 1/2/3 ocorreram a 50s, 70s e 109s (59s entre primeira e terceira); 2/3/4 ocorreram a 70s, 109s e 110s. Foram observados os alertas 3 e 4, com nome e risco da conta. O cenário de controle usa outro cartão a 120s/150s/181s (61s). Veja [alertas Avro desserializados](evidence/alerts.json) e [eventos enriquecidos com update/tombstone](evidence/enriched.json).
+
+### 5. Operação e remoção
+
+```text
+OPERATIONS: Flink jobs RUNNING; checkpoint counts {"restored": 0, "total": 2, "in_progress": 0, "completed": 1, "failed": 1}
+OPERATIONS: replication slot
+   slot_name   | active | lag_bytes 
+---------------+--------+-----------
+ payments_slot | t      |    281096
+(1 row)
+
+
+PASS: real Postgres -> Debezium -> Kafka -> Flink SQL -> Kafka/Avro/Schema Registry
+```
+
+O job estava `RUNNING`; o checkpoint concluído levou 75 ms e confirmou os oito subtasks. **O contador também registra uma tentativa inicial falha**: o primeiro disparo ocorreu antes de todos os tasks estarem rodando, conforme o [diagnóstico real](evidence/initial-checkpoint.txt). Não houve restauração nesse teste. Consulte [checkpoints](evidence/checkpoints.json), [jobs](evidence/jobs.json) e [teardown com volume removido](evidence/teardown.txt).
+
+Para verificar o tempo faturável registrado, foi executado:
+
+```bash
+gh api repos/mariomoutinho/payments-cdc-flink/actions/runs/38756328476/timing
+```
+
+```json
+{"billable":{"UBUNTU":{"total_ms":0,"jobs":2,"job_runs":[{"job_id":116495633747,"duration_ms":0},{"job_id":116495634231,"duration_ms":0}]}},"run_duration_ms":129000}
+```
+
+Este resultado comprova as cinco camadas do **laboratório local**. A exigência específica de executar CDC e Flink no **Confluent Cloud**, testar ACLs lá e medir sua cobrança real continua pendente de uma conta com acesso e orçamento. A validação estática de Terraform não substitui essa execução.

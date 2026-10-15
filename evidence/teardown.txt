@@ -1,0 +1,39 @@
+integration	Teardown	﻿2026-10-15T15:01:31.5642729Z ##[group]Run docker compose down -v --remove-orphans
+integration	Teardown	2026-10-15T15:01:31.5642992Z ^[[36;1mdocker compose down -v --remove-orphans^[[0m
+integration	Teardown	2026-10-15T15:01:31.5698249Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+integration	Teardown	2026-10-15T15:01:31.5698467Z env:
+integration	Teardown	2026-10-15T15:01:31.5698642Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+integration	Teardown	2026-10-15T15:01:31.5698886Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+integration	Teardown	2026-10-15T15:01:31.5699130Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+integration	Teardown	2026-10-15T15:01:31.5699346Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+integration	Teardown	2026-10-15T15:01:31.5699568Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+integration	Teardown	2026-10-15T15:01:31.5699787Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+integration	Teardown	2026-10-15T15:01:31.5699972Z ##[endgroup]
+integration	Teardown	2026-10-15T15:01:31.6429578Z  Container payments-cdc-flink-taskmanager-1  Stopping
+integration	Teardown	2026-10-15T15:01:31.6430298Z  Container payments-cdc-flink-registry-1  Stopping
+integration	Teardown	2026-10-15T15:01:31.6433601Z  Container payments-cdc-flink-connect-1  Stopping
+integration	Teardown	2026-10-15T15:01:32.0668211Z  Container payments-cdc-flink-taskmanager-1  Stopped
+integration	Teardown	2026-10-15T15:01:32.0668661Z  Container payments-cdc-flink-taskmanager-1  Removing
+integration	Teardown	2026-10-15T15:01:32.0740766Z  Container payments-cdc-flink-taskmanager-1  Removed
+integration	Teardown	2026-10-15T15:01:32.0741275Z  Container payments-cdc-flink-jobmanager-1  Stopping
+integration	Teardown	2026-10-15T15:01:32.2559332Z  Container payments-cdc-flink-registry-1  Stopped
+integration	Teardown	2026-10-15T15:01:32.2559670Z  Container payments-cdc-flink-registry-1  Removing
+integration	Teardown	2026-10-15T15:01:32.2627886Z  Container payments-cdc-flink-registry-1  Removed
+integration	Teardown	2026-10-15T15:01:32.9383010Z  Container payments-cdc-flink-jobmanager-1  Stopped
+integration	Teardown	2026-10-15T15:01:32.9383377Z  Container payments-cdc-flink-jobmanager-1  Removing
+integration	Teardown	2026-10-15T15:01:32.9459781Z  Container payments-cdc-flink-jobmanager-1  Removed
+integration	Teardown	2026-10-15T15:01:33.5375601Z  Container payments-cdc-flink-connect-1  Stopped
+integration	Teardown	2026-10-15T15:01:33.5376760Z  Container payments-cdc-flink-connect-1  Removing
+integration	Teardown	2026-10-15T15:01:33.5470287Z  Container payments-cdc-flink-connect-1  Removed
+integration	Teardown	2026-10-15T15:01:33.5471038Z  Container payments-cdc-flink-postgres-1  Stopping
+integration	Teardown	2026-10-15T15:01:33.5471596Z  Container payments-cdc-flink-kafka-1  Stopping
+integration	Teardown	2026-10-15T15:01:33.6370440Z  Container payments-cdc-flink-postgres-1  Stopped
+integration	Teardown	2026-10-15T15:01:33.6371010Z  Container payments-cdc-flink-postgres-1  Removing
+integration	Teardown	2026-10-15T15:01:33.6486972Z  Container payments-cdc-flink-postgres-1  Removed
+integration	Teardown	2026-10-15T15:01:34.3654040Z  Container payments-cdc-flink-kafka-1  Stopped
+integration	Teardown	2026-10-15T15:01:34.3654717Z  Container payments-cdc-flink-kafka-1  Removing
+integration	Teardown	2026-10-15T15:01:34.4103851Z  Container payments-cdc-flink-kafka-1  Removed
+integration	Teardown	2026-10-15T15:01:34.4109990Z  Volume payments-cdc-flink_pgdata  Removing
+integration	Teardown	2026-10-15T15:01:34.4738532Z  Network payments-cdc-flink_default  Removing
+integration	Teardown	2026-10-15T15:01:34.4738927Z  Network payments-cdc-flink_default  Removed
+integration	Teardown	2026-10-15T15:01:34.5926026Z  Volume payments-cdc-flink_pgdata  Removed

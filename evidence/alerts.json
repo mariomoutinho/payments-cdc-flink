@@ -1,0 +1,28 @@
+[
+  {
+    "key": {
+      "transaction_id": 3
+    },
+    "value": {
+      "transaction_id": 3,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "first_transaction_id": 1,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  },
+  {
+    "key": {
+      "transaction_id": 4
+    },
+    "value": {
+      "transaction_id": 4,
+      "account_id": 1,
+      "card_id": "card-fraud",
+      "first_transaction_id": 2,
+      "customer_name": "Ana Sintetica",
+      "risk_level": "medium"
+    }
+  }
+]
