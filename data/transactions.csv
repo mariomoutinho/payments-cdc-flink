@@ -1,0 +1,9 @@
+transaction_id,account_id,card_id,amount_cents,seconds
+1,1,card-fraud,1000,50
+2,1,card-fraud,2000,70
+3,1,card-fraud,3000,109
+4,1,card-fraud,4000,110
+5,2,card-safe,500,120
+6,2,card-safe,500,150
+7,2,card-safe,500,181
+8,2,watermark,1,300

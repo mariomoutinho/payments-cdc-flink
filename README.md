@@ -47,7 +47,7 @@ Kafka: `localhost:9092`; Flink UI: `http://localhost:8082`; Registry: `http://lo
 
 ## Confluent Cloud: o que falta executar
 
-A arquitetura local usa os mesmos conceitos, mas não substitui o provisionamento/execução no serviço gerenciado. Para a entrega na nuvem será necessário:
+O módulo opcional [infra/cloud](infra/cloud/README.md) descreve e configura a fundação Cloud via Terraform, sem aplicar recursos. A arquitetura local usa os mesmos conceitos, mas não substitui o provisionamento/execução no serviço gerenciado. Para a entrega na nuvem será necessário:
 
 - Conta Confluent Cloud, região, orçamento e PostgreSQL acessível ao conector via TLS. `localhost`/hostname `postgres` do Compose não são acessíveis pela nuvem.
 - Ambiente, cluster Basic, Schema Registry e compute pool Flink na mesma região, com service accounts separados para escrita/leitura e ACLs por tópico e consumer group; identidades próprias para conector e processamento.

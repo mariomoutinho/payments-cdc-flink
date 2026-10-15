@@ -1,4 +1,5 @@
 """Integration checks against real services; passwords are never printed."""
+import csv
 import io
 import json
 import secrets
@@ -76,7 +77,8 @@ def main():
     print('FLINK: statement set submitted\n'+result[-1500:],flush=True)
     sql("SET ROLE payments_writer; INSERT INTO accounts VALUES (1,'Ana Sintetica','medium'),(2,'Bruno Sintetico','low');")
     base=1735689600000
-    rows=[(1,1,'card-fraud',1000,50),(2,1,'card-fraud',2000,70),(3,1,'card-fraud',3000,109),(4,1,'card-fraud',4000,110),(5,2,'card-safe',500,120),(6,2,'card-safe',500,150),(7,2,'card-safe',500,181),(8,2,'watermark',1,300)]
+    with (ROOT/'data'/'transactions.csv').open() as source:
+        rows=[(int(r['transaction_id']),int(r['account_id']),r['card_id'],int(r['amount_cents']),int(r['seconds'])) for r in csv.DictReader(source)]
     values=','.join(f"({tid},{aid},'{card}',{amount},{base+secs*1000})" for tid,aid,card,amount,secs in rows)
     sql('SET ROLE payments_writer; INSERT INTO transactions VALUES '+values+';')
     alerts=consume('payments.alerts',lambda xs: {3,4}<={x['value']['transaction_id'] for x in xs if x['value']},avro=True)
@@ -107,7 +109,15 @@ def main():
     jobs=wait_http('http://localhost:8082/jobs/overview')
     assert jobs['jobs'] and all(j['state']=='RUNNING' for j in jobs['jobs']),jobs
     (ART/'jobs.json').write_text(json.dumps(jobs,indent=2))
-    print('OPERATIONS: Flink jobs RUNNING; checkpoints enabled every 5s',flush=True)
+    job_id=jobs['jobs'][0]['jid']
+    end=time.monotonic()+45
+    while time.monotonic()<end:
+        checkpoints=http('GET',f'http://localhost:8082/jobs/{job_id}/checkpoints')
+        if checkpoints['counts']['completed']>0: break
+        time.sleep(2)
+    else: raise AssertionError('No completed checkpoint')
+    (ART/'checkpoints.json').write_text(json.dumps(checkpoints,indent=2))
+    print('OPERATIONS: Flink jobs RUNNING; checkpoint counts '+json.dumps(checkpoints['counts']),flush=True)
     print('OPERATIONS: replication slot\n'+sql("SELECT slot_name,active,pg_wal_lsn_diff(pg_current_wal_lsn(),confirmed_flush_lsn) AS lag_bytes FROM pg_replication_slots WHERE slot_name='payments_slot';"),flush=True)
     print('PASS: real Postgres -> Debezium -> Kafka -> Flink SQL -> Kafka/Avro/Schema Registry',flush=True)
 if __name__=='__main__': main()
