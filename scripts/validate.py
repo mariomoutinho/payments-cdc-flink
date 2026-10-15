@@ -29,7 +29,7 @@ def wait_http(url, timeout=180):
             time.sleep(2)
     raise TimeoutError(url)
 def consume(topic, predicate, timeout=120, avro=False):
-    c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False})
+    c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False,'broker.address.family':'v4'})
     c.subscribe([topic]); rows=[]; end=time.monotonic()+timeout
     try:
         while time.monotonic()<end:
@@ -60,7 +60,8 @@ def main():
     denied=subprocess.run(['docker','compose','exec','-T','postgres','psql','-X','-v','ON_ERROR_STOP=1','-U','postgres','-d','payments'],input="SET ROLE payments_reader; INSERT INTO accounts VALUES (999,'denied','low');",text=True,capture_output=True,cwd=ROOT)
     assert denied.returncode!=0 and 'permission denied' in denied.stderr
     print('ACCESS: reader INSERT denied by PostgreSQL',flush=True)
-    config={'connector.class':'io.debezium.connector.postgresql.PostgresConnector','database.hostname':'postgres','database.port':'5432','database.user':'payments_cdc','database.password':cdc_password,'database.dbname':'payments','topic.prefix':'payments','plugin.name':'pgoutput','slot.name':'payments_slot','publication.name':'payments_pub','publication.autocreate.mode':'disabled','table.include.list':'public.accounts,public.transactions','snapshot.mode':'initial','tombstones.on.delete':'true'}
+    config=json.loads((ROOT/'connectors'/'postgres-cdc.json').read_text())
+    config['database.password']=cdc_password
     r=requests.put('http://localhost:8083/connectors/payments-cdc/config',json=config,timeout=30)
     assert r.ok, f'Connect configuration failed: HTTP {r.status_code}'
     end=time.monotonic()+120
@@ -76,6 +77,9 @@ def main():
     assert 'Job ID' in result and '[ERROR]' not in result,result
     print('FLINK: statement set submitted\n'+result[-1500:],flush=True)
     sql("SET ROLE payments_writer; INSERT INTO accounts VALUES (1,'Ana Sintetica','medium'),(2,'Bruno Sintetico','low');")
+    account_events=consume('payments.public.accounts',lambda xs:len(xs)>=2)
+    assert all(x['value'].get('op')=='c' for x in account_events), 'Unexpected CDC envelope; check converter schemas.enable'
+    print('CDC: schemaless Debezium envelope verified',flush=True)
     base=1735689600000
     with (ROOT/'data'/'transactions.csv').open() as source:
         rows=[(int(r['transaction_id']),int(r['account_id']),r['card_id'],int(r['amount_cents']),int(r['seconds'])) for r in csv.DictReader(source)]
