@@ -35,3 +35,24 @@ GRANT USAGE ON SCHEMA public TO payments_cdc;
 GRANT SELECT ON accounts, transactions TO payments_cdc;
 GRANT SELECT, INSERT, UPDATE, DELETE ON customers, cards, merchants TO payments_writer;
 GRANT SELECT ON customers, cards, merchants TO payments_reader;
+
+-- IoT evolution: independent source tables, publication and CDC principal.
+CREATE TABLE devices (
+ device_id TEXT PRIMARY KEY, site_id TEXT NOT NULL, criticality TEXT NOT NULL
+);
+CREATE TABLE telemetry (
+ reading_id BIGINT PRIMARY KEY,
+ device_id TEXT NOT NULL REFERENCES devices(device_id),
+ temperature_c INTEGER NOT NULL,
+ battery_pct INTEGER NOT NULL,
+ observed_at BIGINT NOT NULL
+);
+ALTER TABLE devices REPLICA IDENTITY FULL;
+ALTER TABLE telemetry REPLICA IDENTITY FULL;
+CREATE PUBLICATION iot_pub FOR TABLE devices, telemetry;
+CREATE ROLE iot_cdc REPLICATION;
+GRANT CONNECT ON DATABASE payments TO iot_cdc;
+GRANT USAGE ON SCHEMA public TO iot_cdc;
+GRANT SELECT ON devices, telemetry TO iot_cdc;
+GRANT SELECT, INSERT, UPDATE, DELETE ON devices, telemetry TO payments_writer;
+GRANT SELECT ON devices, telemetry TO payments_reader;

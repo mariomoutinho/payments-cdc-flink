@@ -31,7 +31,7 @@ def wait_http(url, timeout=180):
         except requests.RequestException:
             time.sleep(2)
     raise TimeoutError(url)
-def consume(topic, predicate, timeout=120, avro=False):
+def consume(topic, predicate, timeout=120, avro=False, avro_key=False):
     c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False,'broker.address.family':'v4'})
     c.subscribe([topic]); rows=[]; end=time.monotonic()+timeout
     try:
@@ -47,7 +47,14 @@ def consume(topic, predicate, timeout=120, avro=False):
                     schema=json.loads(http('GET',f'http://localhost:8081/schemas/ids/{schema_id}')['schema'])
                     value=fastavro.schemaless_reader(io.BytesIO(raw[5:]),schema)
                 else: value=json.loads(raw)
-            rows.append({'key':json.loads(msg.key()) if msg.key() else None,'value':value})
+            key=None
+            if msg.key():
+                if avro_key:
+                    key_bytes=msg.key(); assert key_bytes[0]==0
+                    key_schema=json.loads(http('GET',f'http://localhost:8081/schemas/ids/{int.from_bytes(key_bytes[1:5],"big")}')['schema'])
+                    key=fastavro.schemaless_reader(io.BytesIO(key_bytes[5:]),key_schema)
+                else: key=json.loads(msg.key())
+            rows.append({'key':key,'value':value})
             if predicate(rows): return rows
     finally: c.close()
     (ART/('timeout-'+topic+'.json')).write_text(json.dumps(rows,indent=2,default=str))

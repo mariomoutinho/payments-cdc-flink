@@ -36,6 +36,7 @@ jobs:
           curl -sf localhost:8082/jobs/overview > artifacts/jobs.json || true
           cp -r schemas artifacts/schemas
           curl -sf localhost:8083/connectors/payments-cdc/status > artifacts/connect-status.json || true
+          curl -sf localhost:8083/connectors/iot-cdc/status > artifacts/iot-connect-status.json || true
       - name: Teardown
         if: always()
         run: ./teardown.sh

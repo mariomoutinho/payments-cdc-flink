@@ -1,3 +1,11 @@
+# Evolução em cinco etapas — IoT
+
+O domínio ativo das evoluções é telemetria IoT: dispositivos → CDC → Kafka → Flink SQL → dados enriquecidos Avro e detecção de anomalias. O laboratório de pagamentos abaixo permanece como regressão e histórico de evidências.
+
+1. [Domínio IoT](docs/etapas/01-iot.md): CDC próprio, enriquecimento Avro e velocidade de leituras.
+
+`./setup.sh` executa os dois laboratórios. `./teardown.sh` remove os recursos locais. Saídas da evolução ficam em `artifacts/iot-validation.txt`, disponíveis também no artefato do Actions. Novas evidências devem ser distinguidas das evidências históricas de pagamentos abaixo.
+
 # Desafio final — pipeline de pagamentos
 
 **Pipeline local funcionando, com evidências reais. A execução em Neon/Confluent Cloud continua pendente.** Não houve criação de recursos Cloud nem consulta de sua fatura. A [matriz de aderência ao exemplo](docs/aderencia-template.md) mostra os limites de cada camada, incluindo CDC local em JSON e join de estado atual em vez de temporal.

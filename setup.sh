@@ -10,4 +10,5 @@ python3 -m venv .venv
 mkdir -p artifacts
 docker compose up -d --build --wait --wait-timeout 240
 .venv/bin/python scripts/validate.py 2>&1 | tee artifacts/validation.txt
+.venv/bin/python scripts/validate_iot.py 2>&1 | tee artifacts/iot-validation.txt
 printf '%s\n' 'Pipeline validado. Para remover os recursos: ./teardown.sh'

@@ -1,0 +1,20 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "database.hostname": "postgres",
+  "database.port": "5432",
+  "database.user": "iot_cdc",
+  "database.dbname": "payments",
+  "topic.prefix": "iot",
+  "plugin.name": "pgoutput",
+  "slot.name": "iot_slot",
+  "publication.name": "iot_pub",
+  "publication.autocreate.mode": "disabled",
+  "table.include.list": "public.devices,public.telemetry",
+  "snapshot.mode": "initial",
+  "tombstones.on.delete": "true",
+  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter.schemas.enable": "false",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "value.converter.schemas.enable": "false",
+  "heartbeat.interval.ms": "60000"
+}

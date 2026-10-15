@@ -1,0 +1,59 @@
+{
+  "type": "record",
+  "name": "TelemetryEnriched",
+  "namespace": "com.bootcamp.iot",
+  "fields": [
+    {
+      "name": "reading_id",
+      "type": "long"
+    },
+    {
+      "name": "device_id",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "temperature_c",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "battery_pct",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "observed_at",
+      "type": [
+        "null",
+        "long"
+      ],
+      "default": null
+    },
+    {
+      "name": "site_id",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "criticality",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    }
+  ]
+}
