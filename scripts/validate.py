@@ -12,6 +12,7 @@ from confluent_kafka import Consumer
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'artifacts'
 ART.mkdir(exist_ok=True)
+(ROOT/'schemas').mkdir(exist_ok=True)
 def command(args, stdin=None):
     return subprocess.check_output(args, input=stdin, text=True, cwd=ROOT, stderr=subprocess.STDOUT)
 def sql(statement):
