@@ -74,13 +74,13 @@ Esse comando remove o volume PostgreSQL do projeto. Imagens Docker e cache de bu
 
 Execução de **15/10/2026, concluída às 12:01:37 (America/Sao_Paulo)**. Commit de código testado: `35516066b5a9695a72413ebb0c514d97a62b4e9e`. [Workflow aprovado com integração e Terraform](https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38756328476). Documentação e cópias das evidências foram adicionadas após esse teste, sem alterar o código testado.
 
-O comando executado no runner foi `python scripts/validate.py 2>&1 | tee artifacts/validation.txt`. Abaixo estão trechos literais da saída, salvo a remoção das sequências ANSI de cor. O [log completo](evidence/validation.txt), [serviços](evidence/services.txt), [SQL client](evidence/sql-client.txt) e [metadados](evidence/run.json) estão versionados; não dependem da retenção temporária de artefatos do Actions.
+O comando executado no runner foi `python scripts/validate.py 2>&1 | tee artifacts/validation.txt`. Abaixo estão trechos literais da saída, salvo a remoção das sequências ANSI de cor e espaços finais de linha. O [log completo](evidence/validation.txt), [serviços](evidence/services.txt), [SQL client](evidence/sql-client.txt) e [metadados](evidence/run.json) estão versionados; não dependem da retenção temporária de artefatos do Actions.
 
 ### 1. Fundação e acesso
 
 ```text
 FOUNDATION: distinct writer, reader and CDC roles
-     grantee     | privilege_type 
+     grantee     | privilege_type
 -----------------+----------------
  payments_cdc    | SELECT
  payments_reader | SELECT
@@ -164,7 +164,7 @@ As compras 1/2/3 ocorreram a 50s, 70s e 109s (59s entre primeira e terceira); 2/
 ```text
 OPERATIONS: Flink jobs RUNNING; checkpoint counts {"restored": 0, "total": 2, "in_progress": 0, "completed": 1, "failed": 1}
 OPERATIONS: replication slot
-   slot_name   | active | lag_bytes 
+   slot_name   | active | lag_bytes
 ---------------+--------+-----------
  payments_slot | t      |    281096
 (1 row)

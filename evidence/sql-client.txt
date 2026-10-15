@@ -14,7 +14,7 @@ Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
 
 Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
 
-Flink SQL> 
+Flink SQL>
 > CREATE TABLE accounts (
 >  account_id BIGINT, customer_name STRING, risk_level STRING,
 >  PRIMARY KEY (account_id) NOT ENFORCED
@@ -87,6 +87,6 @@ Flink SQL> [34;1m[INFO] Submitting SQL update statement to the cluster...[0m
 Job ID: a6942d63d797d8156953a2f55c321559
 
 
-Flink SQL> 
+Flink SQL>
 Shutting down the session...
 done.

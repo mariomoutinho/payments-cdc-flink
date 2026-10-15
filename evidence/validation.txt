@@ -1,5 +1,5 @@
 FOUNDATION: distinct writer, reader and CDC roles
-     grantee     | privilege_type 
+     grantee     | privilege_type
 -----------------+----------------
  payments_cdc    | SELECT
  payments_reader | SELECT
@@ -49,7 +49,7 @@ Flink SQL> [INFO] Submitting SQL update statement to the cluster...
 Job ID: a6942d63d797d8156953a2f55c321559
 
 
-Flink SQL> 
+Flink SQL>
 Shutting down the session...
 done.
 
@@ -91,7 +91,7 @@ CONTRACT: optional merchant field accepted: {"id": 2}
 CONTRACT: incompatible transaction_id type rejected: HTTP 409
 OPERATIONS: Flink jobs RUNNING; checkpoint counts {"restored": 0, "total": 2, "in_progress": 0, "completed": 1, "failed": 1}
 OPERATIONS: replication slot
-   slot_name   | active | lag_bytes 
+   slot_name   | active | lag_bytes
 ---------------+--------+-----------
  payments_slot | t      |    281096
 (1 row)
