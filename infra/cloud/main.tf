@@ -67,7 +67,7 @@ resource "confluent_api_key" "kafka" {
 }
 
 resource "confluent_kafka_topic" "topic" {
-  for_each         = toset(["payments.public.accounts", "payments.public.transactions", "payments.enriched", "payments.alerts"])
+  for_each         = toset(["payments.public.accounts", "payments.public.transactions", "payments.enriched", "payments.alerts", "iot.public.devices", "iot.public.telemetry", "iot.validated.telemetry", "iot.enriched", "iot.alerts.velocity", "iot.alerts.thermal", "iot.dlq"])
   topic_name       = each.key
   partitions_count = 1
   rest_endpoint    = confluent_kafka_cluster.payments.rest_endpoint
@@ -82,9 +82,12 @@ resource "confluent_kafka_topic" "topic" {
 
 locals {
   permissions = {
-    writer_topic = { identity = "writer", type = "TOPIC", name = "payments.public.", operation = "WRITE" }
-    reader_topic = { identity = "reader", type = "TOPIC", name = "payments.", operation = "READ" }
-    reader_group = { identity = "reader", type = "GROUP", name = "payments-reader-", operation = "READ" }
+    writer_topic     = { identity = "writer", type = "TOPIC", name = "payments.public.", operation = "WRITE" }
+    reader_topic     = { identity = "reader", type = "TOPIC", name = "payments.", operation = "READ" }
+    iot_writer_topic = { identity = "writer", type = "TOPIC", name = "iot.public.", operation = "WRITE" }
+    iot_reader_topic = { identity = "reader", type = "TOPIC", name = "iot.", operation = "READ" }
+    iot_reader_group = { identity = "reader", type = "GROUP", name = "iot-", operation = "READ" }
+    reader_group     = { identity = "reader", type = "GROUP", name = "payments-reader-", operation = "READ" }
   }
 }
 

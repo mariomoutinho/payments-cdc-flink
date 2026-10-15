@@ -7,3 +7,5 @@ A saída e o offset do worker são confirmados na mesma transação Kafka. Consu
 O teste injeta JSON inválido, insere temperatura -300°C pelo Postgres, observa ambos os motivos na DLQ, reinicia o worker e exige que uma leitura válida posterior chegue enriquecida, com jobs Flink e CDC RUNNING. Registros rejeitados não devem ser reproduzidos automaticamente: corrigir causa e planejar replay, especialmente se uma atualização tiver imagem anterior inválida.
 
 Execução: `./setup.sh`; testes de contrato: `python -m unittest discover -s tests -v`. Artefatos: `iot-dlq.json`, `iot-validation.txt` e log do worker. O teardown inclui os serviços do perfil iot-workers. Esta proteção é entre CDC/Kafka e Flink; não faz um conector de origem continuar quando a conexão com Postgres falha.
+
+Validação real aprovada: https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38761571355 (commit `dfc0965`). Saída: [iot-validation.txt](../../evidence/steps/03/iot-validation.txt).

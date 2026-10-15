@@ -5,6 +5,7 @@ O domínio ativo das evoluções é telemetria IoT: dispositivos → CDC → Kaf
 1. [Domínio IoT](docs/etapas/01-iot.md): CDC próprio, enriquecimento Avro e velocidade de leituras.
 2. [Regra térmica](docs/etapas/02-regra-termica.md): média >=80°C por 5 minutos, com controles negativos.
 3. [Quarentena](docs/etapas/03-quarentena.md): validação de eventos, DLQ e saída/offset em transação Kafka.
+4. [Iceberg/Tableflow](docs/etapas/04-tableflow.md): configuração Cloud opt-in, validada estaticamente; ativação pendente.
 
 `./setup.sh` executa os dois laboratórios. `./teardown.sh` remove os recursos locais. Saídas da evolução ficam em `artifacts/iot-validation.txt`, disponíveis também no artefato do Actions. Novas evidências devem ser distinguidas das evidências históricas de pagamentos abaixo.
 

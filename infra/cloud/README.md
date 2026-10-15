@@ -29,3 +29,7 @@ terraform apply destroy.tfplan
 ```
 
 Não apague o state antes de destruir recursos. `docker compose down` não remove recursos Cloud. Verifique Billing/Usage por ambiente após o encerramento; a região e a duração afetam o custo. Nunca declarar custo de nuvem medido sem executar e consultar o faturamento.
+
+## Tableflow IoT (opt-in)
+
+O módulo também inclui tópicos/ACLs IoT. `enable_tableflow=true` adiciona Schema Registry/Tableflow API keys de bootstrap, schema Avro e materialização ICEBERG gerenciada de `iot.enriched`. O administrador recebe EnvironmentAdmin para provisionar governança; aplicações não devem usar essa identidade. Consulte [etapa 4](../../docs/etapas/04-tableflow.md) para pré-requisitos, validação e remoção. Nada foi aplicado automaticamente.

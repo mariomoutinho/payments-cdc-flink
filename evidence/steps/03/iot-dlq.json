@@ -1,0 +1,24 @@
+[
+  {
+    "key": "iot.public.telemetry:0:12",
+    "value": {
+      "reason": "invalid_json",
+      "source_topic": "iot.public.telemetry",
+      "partition": 0,
+      "offset": 12,
+      "key_base64": "eyJyZWFkaW5nX2lkIjoxMDAwfQ==",
+      "value_base64": "e2Jyb2tlbi1qc29u"
+    }
+  },
+  {
+    "key": "iot.public.telemetry:0:13",
+    "value": {
+      "reason": "temperature_out_of_range",
+      "source_topic": "iot.public.telemetry",
+      "partition": 0,
+      "offset": 13,
+      "key_base64": "eyJyZWFkaW5nX2lkIjoxMDB9",
+      "value_base64": "eyJiZWZvcmUiOm51bGwsImFmdGVyIjp7InJlYWRpbmdfaWQiOjEwMCwiZGV2aWNlX2lkIjoic2Vuc29yLXNhZmUiLCJ0ZW1wZXJhdHVyZV9jIjotMzAwLCJiYXR0ZXJ5X3BjdCI6OTAsIm9ic2VydmVkX2F0IjoxNzM1NjkwODUwMDAwfSwic291cmNlIjp7InZlcnNpb24iOiIyLjcuMy5GaW5hbCIsImNvbm5lY3RvciI6InBvc3RncmVzcWwiLCJuYW1lIjoiaW90IiwidHNfbXMiOjE3OTIwNzg2NTM4MDYsInNuYXBzaG90IjoiZmFsc2UiLCJkYiI6InBheW1lbnRzIiwic2VxdWVuY2UiOiJbXCIyNzI5ODAxNlwiLFwiMjcyOTgwMTZcIl0iLCJ0c191cyI6MTc5MjA3ODY1MzgwNjU2MiwidHNfbnMiOjE3OTIwNzg2NTM4MDY1NjIwMDAsInNjaGVtYSI6InB1YmxpYyIsInRhYmxlIjoidGVsZW1ldHJ5IiwidHhJZCI6Nzk0LCJsc24iOjI3Mjk4MDE2LCJ4bWluIjpudWxsfSwidHJhbnNhY3Rpb24iOm51bGwsIm9wIjoiYyIsInRzX21zIjoxNzkyMDc4NjU0Mjc1LCJ0c191cyI6MTc5MjA3ODY1NDI3NTk3OSwidHNfbnMiOjE3OTIwNzg2NTQyNzU5Nzk0OTZ9"
+    }
+  }
+]
