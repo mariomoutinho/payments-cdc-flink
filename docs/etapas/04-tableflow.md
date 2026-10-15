@@ -32,3 +32,5 @@ Isso remove a fundação gerenciada por este state. Remova antes statements/cone
 Referências oficiais: [quickstart de managed storage](https://docs.confluent.io/cloud/current/topics/tableflow/get-started/quick-start-managed-storage.html), [exemplo Terraform oficial](https://github.com/confluentinc/terraform-provider-confluent/tree/master/examples/configurations/tableflow/confluent-managed-storage), [semântica CDC](https://docs.confluent.io/cloud/current/topics/tableflow/concepts/materialize-cdc.html).
 
 Evidência estática real: [terraform-validate.txt](../../evidence/steps/04/terraform-validate.txt). Nenhum apply foi executado.
+
+Workflow de regressão aprovado: https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38762327362 (commit `9f66423`). Esse resultado inclui validação Terraform e pipeline local, não ativação Tableflow.

@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "name": "RiskScored",
+  "namespace": "com.bootcamp.iot",
+  "fields": [
+    {
+      "name": "reading_id",
+      "type": "long"
+    },
+    {
+      "name": "device_id",
+      "type": "string"
+    },
+    {
+      "name": "risk_score",
+      "type": "double"
+    },
+    {
+      "name": "risk_level",
+      "type": "string"
+    },
+    {
+      "name": "model_version",
+      "type": "string"
+    },
+    {
+      "name": "observed_at",
+      "type": "long"
+    },
+    {
+      "name": "site_id",
+      "type": "string"
+    }
+  ]
+}

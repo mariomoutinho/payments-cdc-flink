@@ -8,10 +8,10 @@ import requests
 from confluent_kafka import Producer
 
 def main():
-    topics=['iot.public.devices','iot.public.telemetry','__debezium-heartbeat.iot','iot.enriched','iot.alerts.velocity','iot.alerts.thermal','iot.validated.telemetry','iot.dlq']
+    topics=['iot.public.devices','iot.public.telemetry','__debezium-heartbeat.iot','iot.enriched','iot.alerts.velocity','iot.alerts.thermal','iot.validated.telemetry','iot.dlq','iot.risk.scored']
     for topic in topics:
         command(['docker','compose','exec','-T','kafka','kafka-topics','--bootstrap-server','kafka:29092','--create','--if-not-exists','--topic',topic,'--partitions','1','--replication-factor','1'])
-    command(['docker','compose','up','-d','--build','iot-validator'])
+    command(['docker','compose','up','-d','--build','iot-validator','iot-scorer'])
     password=secrets.token_hex(24)
     sql(f"ALTER ROLE iot_cdc LOGIN PASSWORD '{password}';")
     config=json.loads((ROOT/'connectors/iot-cdc.json').read_text());config['database.password']=password
@@ -68,6 +68,18 @@ def main():
     status=http('GET','http://localhost:8083/connectors/iot-cdc/status')
     assert all(t['state']=='RUNNING' for t in status['tasks']),status
     print('IOT: UPDATE and DELETE propagated; connector RUNNING',flush=True)
+    risk=consume('iot.risk.scored',lambda xs:any(x['value'] and x['value']['reading_id']==101 for x in xs) and any(x['key']=={'reading_id':7} and x['value'] is None for x in xs),avro=True,avro_key=True,settle_seconds=2)
+    expected=json.loads((ROOT/'models/iot-risk.json').read_text())['model_version']
+    state={}
+    for record in risk:
+        if record['value'] is None:state.pop(record['key']['reading_id'],None)
+        else:
+            value=record['value'];assert 0<=value['risk_score']<=1 and value['model_version']==expected
+            state[value['reading_id']]=value
+    assert 100 not in state and 7 not in state and 101 in state
+    assert state[3]['risk_score']>0.8 and state[6]['risk_score']<0.4,state
+    (ART/'iot-risk.json').write_text(json.dumps(risk,indent=2))
+    print('IOT AI: '+json.dumps({'model_version':expected,'hot_score':state[3]['risk_score'],'normal_score':state[6]['risk_score'],'live_projection_rows':len(state),'deleted_reading_7_absent':7 not in state}),flush=True)
     print('PASS: IoT CDC, Avro enrichment and velocity detection',flush=True)
 
 if __name__=='__main__':main()

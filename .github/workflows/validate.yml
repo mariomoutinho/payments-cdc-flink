@@ -36,6 +36,7 @@ jobs:
           docker compose ps > artifacts/services.txt
           docker compose logs --no-color jobmanager taskmanager > artifacts/flink.log
           docker compose --profile "*" logs --no-color iot-validator > artifacts/iot-validator.log
+          docker compose --profile "*" logs --no-color iot-scorer > artifacts/iot-scorer.log
           curl -sf localhost:8082/jobs/overview > artifacts/jobs.json || true
           cp -r schemas artifacts/schemas
           curl -sf localhost:8083/connectors/payments-cdc/status > artifacts/connect-status.json || true

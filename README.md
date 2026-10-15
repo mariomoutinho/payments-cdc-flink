@@ -6,8 +6,11 @@ O domínio ativo das evoluções é telemetria IoT: dispositivos → CDC → Kaf
 2. [Regra térmica](docs/etapas/02-regra-termica.md): média >=80°C por 5 minutos, com controles negativos.
 3. [Quarentena](docs/etapas/03-quarentena.md): validação de eventos, DLQ e saída/offset em transação Kafka.
 4. [Iceberg/Tableflow](docs/etapas/04-tableflow.md): configuração Cloud opt-in, validada estaticamente; ativação pendente.
+5. [Modelo de risco](docs/etapas/05-ia.md): regressão logística treinada offline e inferência Avro transacional por leitura.
 
-`./setup.sh` executa os dois laboratórios. `./teardown.sh` remove os recursos locais. Saídas da evolução ficam em `artifacts/iot-validation.txt`, disponíveis também no artefato do Actions. Novas evidências devem ser distinguidas das evidências históricas de pagamentos abaixo.
+`./setup.sh` executa os dois laboratórios. `./teardown.sh` remove os recursos locais. Saídas da evolução ficam em `artifacts/iot-validation.txt`, disponíveis também no artefato do Actions. As descrições acima são separadas por etapa. Evidências de 1–3 estão versionadas em `evidence/steps/`; a etapa 4 possui evidência estática e não foi aplicada. A etapa 5 inclui treino e avaliação reais; a validação streaming e teardown ficam no artefato do [workflow](https://github.com/mariomoutinho/payments-cdc-flink/actions/workflows/validate.yml).
+
+Caminho IoT final: Postgres → CDC → Kafka bruto → validador transacional/DLQ → Flink (enriquecimento + duas regras) → Avro → modelo treinado → `iot.risk.scored`. Tableflow é um ramo Cloud opt-in para `iot.enriched`, sem ativação nesta conta. Consulte [resumo das cinco etapas](docs/etapas/README.md). As evidências históricas de pagamentos abaixo não são apresentadas como prova das evoluções.
 
 # Desafio final — pipeline de pagamentos
 

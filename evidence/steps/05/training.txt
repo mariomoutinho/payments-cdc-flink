@@ -1,0 +1,2 @@
+$ python3 -m ai.train
+{"held_out_samples": 600, "metrics": {"accuracy": 0.936667, "f1": 0.946328, "roc_auc": 0.983995}, "model_version": "iot-logreg-v1-5fc230b763dc", "training_samples": 2400}

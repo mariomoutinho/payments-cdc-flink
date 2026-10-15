@@ -1,0 +1,12 @@
+$ python3 -m unittest discover -s tests -v
+test_hot_sensor_ranks_above_normal (test_model.RiskModelTest.test_hot_sensor_ranks_above_normal) ... ok
+test_invalid_features_and_changed_model_rejected (test_model.RiskModelTest.test_invalid_features_and_changed_model_rejected) ... ok
+test_reproduces_held_out_metrics (test_model.RiskModelTest.test_reproduces_held_out_metrics) ... ok
+test_business_errors_are_not_silently_accepted (test_records.TelemetryContractTest.test_business_errors_are_not_silently_accepted) ... ok
+test_rejects_malformed_and_wrong_key (test_records.TelemetryContractTest.test_rejects_malformed_and_wrong_key) ... ok
+test_valid_create_update_and_tombstone (test_records.TelemetryContractTest.test_valid_create_update_and_tombstone) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.052s
+
+OK

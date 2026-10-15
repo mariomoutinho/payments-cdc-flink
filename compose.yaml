@@ -98,5 +98,18 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     depends_on:
       kafka: {condition: service_healthy}
+  iot-scorer:
+    build:
+      context: .
+      dockerfile: streaming/Dockerfile
+    profiles: [iot-workers]
+    restart: on-failure
+    command: [python, -m, streaming.scorer]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_URL: http://registry:8081
+    depends_on:
+      kafka: {condition: service_healthy}
+      registry: {condition: service_started}
 volumes:
   pgdata:

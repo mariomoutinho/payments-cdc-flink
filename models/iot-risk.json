@@ -1,0 +1,21 @@
+{
+  "algorithm": "logistic_regression",
+  "feature_version": 1,
+  "weights": [
+    -2.783044179516,
+    2.441718632499,
+    1.392403647364,
+    0.379284880993
+  ],
+  "seed": 42,
+  "training_samples": 2400,
+  "held_out_samples": 600,
+  "dataset_sha256": "92943dc67447f9dc480ba526711c7b2716d87e36ca6a68a1385093a21de6c668",
+  "scope": "Synthetic IoT demo only; not validated on real equipment or payment fraud",
+  "model_version": "iot-logreg-v1-5fc230b763dc",
+  "held_out_metrics": {
+    "accuracy": 0.936667,
+    "f1": 0.946328,
+    "roc_auc": 0.983995
+  }
+}

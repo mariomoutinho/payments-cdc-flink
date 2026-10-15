@@ -67,7 +67,7 @@ resource "confluent_api_key" "kafka" {
 }
 
 resource "confluent_kafka_topic" "topic" {
-  for_each         = toset(["payments.public.accounts", "payments.public.transactions", "payments.enriched", "payments.alerts", "iot.public.devices", "iot.public.telemetry", "iot.validated.telemetry", "iot.enriched", "iot.alerts.velocity", "iot.alerts.thermal", "iot.dlq"])
+  for_each         = toset(["payments.public.accounts", "payments.public.transactions", "payments.enriched", "payments.alerts", "iot.public.devices", "iot.public.telemetry", "iot.validated.telemetry", "iot.enriched", "iot.alerts.velocity", "iot.alerts.thermal", "iot.dlq", "iot.risk.scored"])
   topic_name       = each.key
   partitions_count = 1
   rest_endpoint    = confluent_kafka_cluster.payments.rest_endpoint
