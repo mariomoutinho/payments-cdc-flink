@@ -3,16 +3,18 @@ WARNING: Unknown module: jdk.compiler specified to --add-exports
 WARNING: Unknown module: jdk.compiler specified to --add-exports
 WARNING: Unknown module: jdk.compiler specified to --add-exports
 WARNING: Unknown module: jdk.compiler specified to --add-exports
-Oct 15, 2026 3:01:17 PM org.jline.utils.Log logr
+Oct 15, 2026 3:16:09 PM org.jline.utils.Log logr
 WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
-[34;1m[INFO] Executing SQL from file.[0m
+[INFO] Executing SQL from file.
 
 Command history file path: /opt/flink/.flink-sql-history
-Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+Flink SQL> [INFO] Execute statement succeeded.
 
-Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+Flink SQL> [INFO] Execute statement succeeded.
 
-Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+Flink SQL> [INFO] Execute statement succeeded.
+
+Flink SQL> [INFO] Execute statement succeeded.
 
 Flink SQL>
 > CREATE TABLE accounts (
@@ -22,7 +24,7 @@ Flink SQL>
 >  'connector'='kafka', 'topic'='payments.public.accounts',
 >  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-accounts',
 >  'scan.startup.mode'='earliest-offset', 'format'='debezium-json'
-> )[34;1m[INFO] Execute statement succeeded.[0m
+> )[INFO] Execute statement succeeded.
 
 Flink SQL> CREATE TABLE transactions (
 >  transaction_id BIGINT, account_id BIGINT, card_id STRING, amount_cents BIGINT,
@@ -31,7 +33,7 @@ Flink SQL> CREATE TABLE transactions (
 >  'connector'='kafka', 'topic'='payments.public.transactions',
 >  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-transactions',
 >  'scan.startup.mode'='earliest-offset', 'format'='debezium-json'
-> )[34;1m[INFO] Execute statement succeeded.[0m
+> )[INFO] Execute statement succeeded.
 
 Flink SQL> -- Segunda leitura do envelope bruto: append-only para MATCH_RECOGNIZE.
 > CREATE TABLE transaction_events (
@@ -44,7 +46,7 @@ Flink SQL> -- Segunda leitura do envelope bruto: append-only para MATCH_RECOGNIZ
 >  'connector'='kafka', 'topic'='payments.public.transactions',
 >  'properties.bootstrap.servers'='kafka:29092', 'properties.group.id'='flink-events',
 >  'scan.startup.mode'='earliest-offset', 'format'='json'
-> )[34;1m[INFO] Execute statement succeeded.[0m
+> )[INFO] Execute statement succeeded.
 
 Flink SQL> CREATE TABLE enriched_transactions (
 >  transaction_id BIGINT, account_id BIGINT, card_id STRING, amount_cents BIGINT,
@@ -54,37 +56,46 @@ Flink SQL> CREATE TABLE enriched_transactions (
 >  'connector'='upsert-kafka', 'topic'='payments.enriched',
 >  'properties.bootstrap.servers'='kafka:29092',
 >  'key.format'='json', 'value.format'='json'
-> )[34;1m[INFO] Execute statement succeeded.[0m
+> )[INFO] Execute statement succeeded.
 
 Flink SQL> CREATE TABLE fraud_alerts (
 >  transaction_id BIGINT, account_id BIGINT, card_id STRING,
->  first_transaction_id BIGINT, customer_name STRING, risk_level STRING,
+>  first_transaction_id BIGINT, customer_name STRING, risk_level STRING, money DECIMAL(15,2),
 >  PRIMARY KEY (transaction_id) NOT ENFORCED
 > ) WITH (
 >  'connector'='upsert-kafka', 'topic'='payments.alerts',
 >  'properties.bootstrap.servers'='kafka:29092', 'key.format'='json',
 >  'value.format'='avro-confluent',
 >  'value.avro-confluent.url'='http://registry:8081',
->  'value.avro-confluent.subject'='payments.alerts-value'
-> )[34;1m[INFO] Execute statement succeeded.[0m
+>  'value.avro-confluent.subject'='payments.alerts-value',
+>  'value.avro-confluent.schema'='{"type":"record","name":"FraudDetected","namespace":"com.bootcamp.payments.fraud","fields":[{"name":"transaction_id","type":"long"},{"name":"account_id","type":["null","long"],"default":null},{"name":"card_id","type":["null","string"],"default":null,"confluent:tags":["PCI"],"doc":"Synthetic card token only; never PAN or CVV."},{"name":"first_transaction_id","type":["null","long"],"default":null},{"name":"customer_name","type":["null","string"],"default":null,"confluent:tags":["PII"]},{"name":"risk_level","type":["null","string"],"default":null},{"name":"money","type":["null",{"type":"bytes","logicalType":"decimal","precision":15,"scale":2}],"default":null}]}'
+> )[INFO] Execute statement succeeded.
 
-Flink SQL> [34;1m[INFO] Execute statement succeeded.[0m
+Flink SQL> [INFO] Execute statement succeeded.
 
 Flink SQL> CREATE VIEW suspicious_sequences AS
 >  SELECT * FROM created_transactions
 >  MATCH_RECOGNIZE (
 >   PARTITION BY card_id ORDER BY event_time
 >   MEASURES C.transaction_id AS transaction_id, C.account_id AS account_id,
->            A.transaction_id AS first_transaction_id
+>            A.transaction_id AS first_transaction_id, C.amount_cents AS amount_cents
 >   ONE ROW PER MATCH
 >   AFTER MATCH SKIP TO NEXT ROW
 >   PATTERN (A B C) WITHIN INTERVAL '60' SECOND
 >   DEFINE A AS TRUE, B AS TRUE, C AS TRUE
->  )[34;1m[INFO] Execute statement succeeded.[0m
+>  )[INFO] Execute statement succeeded.
 
-Flink SQL> [34;1m[INFO] Submitting SQL update statement to the cluster...[0m
-[34;1m[INFO] SQL update statement has been successfully submitted to the cluster:[0m
-Job ID: a6942d63d797d8156953a2f55c321559
+Flink SQL> EXECUTE STATEMENT SET
+> BEGIN
+>  INSERT INTO enriched_transactions
+>  SELECT t.transaction_id, t.account_id, t.card_id, t.amount_cents, t.occurred_at,
+>         a.customer_name, a.risk_level
+>  FROM transactions t JOIN accounts a ON t.account_id = a.account_id;
+>  INSERT INTO fraud_alerts
+>  SELECT s.transaction_id, s.account_id, s.card_id, s.first_transaction_id,
+>         a.customer_name, a.risk_level, CAST(s.amount_cents / 100.00 AS DECIMAL(15,2))[INFO] Submitting SQL update statement to the cluster...
+[INFO] SQL update statement has been successfully submitted to the cluster:
+Job ID: 2ad76371d15ad8582ff3cd5c887322b8
 
 
 Flink SQL>

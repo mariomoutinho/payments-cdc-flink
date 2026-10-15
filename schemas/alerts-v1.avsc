@@ -1,7 +1,7 @@
 {
   "type": "record",
-  "name": "record",
-  "namespace": "org.apache.flink.avro.generated",
+  "name": "FraudDetected",
+  "namespace": "com.bootcamp.payments.fraud",
   "fields": [
     {
       "name": "transaction_id",
@@ -21,7 +21,11 @@
         "null",
         "string"
       ],
-      "default": null
+      "doc": "Synthetic card token only; never PAN or CVV.",
+      "default": null,
+      "confluent:tags": [
+        "PCI"
+      ]
     },
     {
       "name": "first_transaction_id",
@@ -37,13 +41,29 @@
         "null",
         "string"
       ],
-      "default": null
+      "default": null,
+      "confluent:tags": [
+        "PII"
+      ]
     },
     {
       "name": "risk_level",
       "type": [
         "null",
         "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "money",
+      "type": [
+        "null",
+        {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 15,
+          "scale": 2
+        }
       ],
       "default": null
     }

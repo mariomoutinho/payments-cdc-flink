@@ -1,1 +1,1 @@
-jobmanager-1   | 2026-10-15 15:01:22,525 INFO  org.apache.flink.runtime.checkpoint.CheckpointFailureManager [] - Failed to trigger checkpoint for job a6942d63d797d8156953a2f55c321559 since Checkpoint triggering task Source: transactions[1] (1/1) of job a6942d63d797d8156953a2f55c321559 is not being executed at the moment. Aborting checkpoint. Failure reason: Not all required tasks are currently running..
+No failed checkpoint trigger found in this run.

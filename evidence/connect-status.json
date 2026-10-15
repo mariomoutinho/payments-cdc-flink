@@ -1,0 +1,1 @@
+{"name":"payments-cdc","connector":{"state":"RUNNING","worker_id":"172.18.0.6:8083"},"tasks":[{"id":0,"state":"RUNNING","worker_id":"172.18.0.6:8083"}],"type":"source"}

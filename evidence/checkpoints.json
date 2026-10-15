@@ -1,41 +1,41 @@
 {
   "counts": {
     "restored": 0,
-    "total": 2,
+    "total": 1,
     "in_progress": 0,
     "completed": 1,
-    "failed": 1
+    "failed": 0
   },
   "summary": {
     "checkpointed_size": {
-      "min": 42762,
-      "max": 42762,
-      "avg": 42762,
-      "p50": 42762.0,
-      "p90": 42762.0,
-      "p95": 42762.0,
-      "p99": 42762.0,
-      "p999": 42762.0
+      "min": 534109,
+      "max": 534109,
+      "avg": 534109,
+      "p50": 534109.0,
+      "p90": 534109.0,
+      "p95": 534109.0,
+      "p99": 534109.0,
+      "p999": 534109.0
     },
     "state_size": {
-      "min": 42762,
-      "max": 42762,
-      "avg": 42762,
-      "p50": 42762.0,
-      "p90": 42762.0,
-      "p95": 42762.0,
-      "p99": 42762.0,
-      "p999": 42762.0
+      "min": 534109,
+      "max": 534109,
+      "avg": 534109,
+      "p50": 534109.0,
+      "p90": 534109.0,
+      "p95": 534109.0,
+      "p99": 534109.0,
+      "p999": 534109.0
     },
     "end_to_end_duration": {
-      "min": 75,
-      "max": 75,
-      "avg": 75,
-      "p50": 75.0,
-      "p90": 75.0,
-      "p95": 75.0,
-      "p99": 75.0,
-      "p999": 75.0
+      "min": 99,
+      "max": 99,
+      "avg": 99,
+      "p50": 99.0,
+      "p90": 99.0,
+      "p95": 99.0,
+      "p99": 99.0,
+      "p999": 99.0
     },
     "alignment_buffered": {
       "min": 0,
@@ -75,11 +75,11 @@
       "status": "COMPLETED",
       "is_savepoint": false,
       "savepointFormat": null,
-      "trigger_timestamp": 1792076487517,
-      "latest_ack_timestamp": 1792076487592,
-      "checkpointed_size": 42762,
-      "state_size": 42762,
-      "end_to_end_duration": 75,
+      "trigger_timestamp": 1792077376559,
+      "latest_ack_timestamp": 1792077376658,
+      "checkpointed_size": 534109,
+      "state_size": 534109,
+      "end_to_end_duration": 99,
       "alignment_buffered": 0,
       "processed_data": 0,
       "persisted_data": 0,
@@ -87,7 +87,7 @@
       "num_acknowledged_subtasks": 8,
       "checkpoint_type": "CHECKPOINT",
       "tasks": {},
-      "external_path": "file:/tmp/checkpoints/a6942d63d797d8156953a2f55c321559/chk-1",
+      "external_path": "file:/tmp/checkpoints/2ad76371d15ad8582ff3cd5c887322b8/chk-1",
       "discarded": false
     },
     "savepoint": null,
@@ -101,11 +101,11 @@
       "status": "COMPLETED",
       "is_savepoint": false,
       "savepointFormat": null,
-      "trigger_timestamp": 1792076487517,
-      "latest_ack_timestamp": 1792076487592,
-      "checkpointed_size": 42762,
-      "state_size": 42762,
-      "end_to_end_duration": 75,
+      "trigger_timestamp": 1792077376559,
+      "latest_ack_timestamp": 1792077376658,
+      "checkpointed_size": 534109,
+      "state_size": 534109,
+      "end_to_end_duration": 99,
       "alignment_buffered": 0,
       "processed_data": 0,
       "persisted_data": 0,
@@ -113,7 +113,7 @@
       "num_acknowledged_subtasks": 8,
       "checkpoint_type": "CHECKPOINT",
       "tasks": {},
-      "external_path": "file:/tmp/checkpoints/a6942d63d797d8156953a2f55c321559/chk-1",
+      "external_path": "file:/tmp/checkpoints/2ad76371d15ad8582ff3cd5c887322b8/chk-1",
       "discarded": false
     }
   ]

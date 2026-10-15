@@ -1,27 +1,23 @@
-# Resumo da entrega
+# Resumo da entrega — pipeline de pagamentos
 
 Repositório público: https://github.com/mariomoutinho/payments-cdc-flink
 
-## O que foi entregue
+Workflow aprovado: https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38758536328
 
-Pipeline local PostgreSQL → Debezium CDC → Kafka → Flink SQL → Kafka, com saída de alertas Avro e Schema Registry. Dados sintéticos reproduzíveis, configurações Compose e conector, scripts SQL, teste integrado, CI e fundação opcional Terraform para Confluent Cloud.
+Código testado: `5d483f13e2470e2d4785f6497c9ceb8d1f940bcd`.
 
-## Prova de execução
+## Entregue e executado
 
-Workflow aprovado: https://github.com/mariomoutinho/payments-cdc-flink/actions/runs/38756328476
+Setup/teardown automatizados; seed=42 com 200 clientes, 240 contas, 320 cartões, 60 estabelecimentos e 2000 transações; CDC com insert/update/delete/tombstone; enriquecimento de estado; fraude em sequências sobrepostas de 60s; alerta Avro com namespace com.bootcamp.payments.fraud, decimal(15,2), tags PII/PCI; testes de compatibilidade e consumidor SQLite com replay idempotente. Evidências completas e quatro pilares operacionais no README.
 
-Commit testado: `35516066b5a9695a72413ebb0c514d97a62b4e9e`.
+## Custo e encerramento
 
-O README contém saídas reais de permissões, eventos insert/update/delete, propagação de update e tombstone, dois alertas em sequências sobrepostas de 60s, evolução compatível aceita e incompatível rejeitada (HTTP 409), checkpoint concluído e lag de replicação. As evidências completas estão na pasta `evidence/`.
+Computação do workflow público: US$ 0; tempo faturável informado pela API: 0 ms. Nenhum recurso Confluent criado. Teardown local verificou containers=[] volumes=[]. Não existe fatura Confluent deste laboratório.
 
-## Reprodução e encerramento
+## Limites em relação ao exemplo
 
-Seguir os comandos do README a partir de um clone limpo. O teste gera senhas aleatórias fora do Git. A remoção usa `docker compose down -v --remove-orphans` dentro do projeto. O CI comprovou a remoção do volume PostgreSQL ao terminar.
+Pipeline comprovado é local, CDC bruto JSON e join de estado atual. Neon/Confluent Cloud, CDC Avro gerenciado, temporal join e métricas/faturamento/teardown do serviço continuam pendentes. Terraform foi validado, não aplicado. Consultar `docs/aderencia-template.md` antes de submeter.
 
-## Custo observado
+## Correção do template
 
-129 segundos de duração total do workflow; a API do Actions informou 0 ms faturáveis para os dois jobs Ubuntu em repositório público. Nenhum recurso Confluent Cloud foi criado. Não há cobrança Cloud a apresentar nem estimativa inventada de implantação Cloud.
-
-## Limitação da entrega
-
-A versão comprovada é local. O módulo Cloud passou em `terraform validate`, mas não foi aplicado. Execução gerenciada, conector Cloud, statements Cloud, verificação de ACL e custo real Cloud exigem acesso à conta. Este resumo não deve ser apresentado como comprovação de execução no Confluent Cloud.
+Sob BACKWARD, remover campo no novo reader pode ser compatível; a API real comprovou isso. Foram rejeitados campo obrigatório novo sem default e mudança incompatível de tipo. Não foi fabricada uma rejeição para reproduzir uma expectativa incorreta.
