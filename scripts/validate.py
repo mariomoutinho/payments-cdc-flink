@@ -32,7 +32,7 @@ def wait_http(url, timeout=180):
             time.sleep(2)
     raise TimeoutError(url)
 def consume(topic, predicate, timeout=120, avro=False, avro_key=False, settle_seconds=0):
-    c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False,'broker.address.family':'v4'})
+    c=Consumer({'bootstrap.servers':'localhost:9092','group.id':'evidence-'+secrets.token_hex(6),'auto.offset.reset':'earliest','enable.auto.commit':False,'isolation.level':'read_committed','broker.address.family':'v4'})
     c.subscribe([topic]); rows=[]; end=time.monotonic()+timeout; ready_at=None
     try:
         while time.monotonic()<end:

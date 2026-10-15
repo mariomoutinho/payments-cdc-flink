@@ -88,5 +88,15 @@ services:
         taskmanager.numberOfTaskSlots: 8
         taskmanager.memory.process.size: 2048m
         parallelism.default: 1
+  iot-validator:
+    build:
+      context: .
+      dockerfile: streaming/Dockerfile
+    profiles: [iot-workers]
+    restart: on-failure
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      kafka: {condition: service_healthy}
 volumes:
   pgdata:

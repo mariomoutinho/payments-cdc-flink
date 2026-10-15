@@ -1,0 +1,10 @@
+.git
+.env
+.venv
+artifacts
+evidence
+**/__pycache__
+**/.terraform
+**/*.tfstate*
+**/*.tfvars
+**/*.tfplan

@@ -1,0 +1,6 @@
+IOT: Avro key/value enriched with factory-a/high; 9 readings observed
+IOT VELOCITY: [{"key": {"reading_id": 3}, "value": {"reading_id": 3, "device_id": "sensor-hot", "first_reading_id": 1}}]
+IOT THERMAL: [{"key": null, "value": {"device_id": "sensor-hot", "window_start": "2025-01-01 00:00:00", "window_end": "2025-01-01 00:05:00", "sample_count": 3, "avg_temperature": 90.0}}]
+IOT THERMAL CONTROL: isolated 100C spike averages 60C; normal sensor averages 23C; no alerts
+IOT: UPDATE and DELETE propagated; connector RUNNING
+PASS: IoT CDC, Avro enrichment and velocity detection

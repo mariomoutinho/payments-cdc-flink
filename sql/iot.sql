@@ -14,8 +14,8 @@ CREATE TABLE iot_telemetry (
  reading_id BIGINT, device_id STRING, temperature_c INT, battery_pct INT, observed_at BIGINT,
  PRIMARY KEY (reading_id) NOT ENFORCED
 ) WITH (
- 'connector'='kafka','topic'='iot.public.telemetry',
- 'properties.bootstrap.servers'='kafka:29092','properties.group.id'='iot-state',
+ 'connector'='kafka','topic'='iot.validated.telemetry',
+ 'properties.bootstrap.servers'='kafka:29092','properties.isolation.level'='read_committed','properties.group.id'='iot-state',
  'scan.startup.mode'='earliest-offset','format'='debezium-json'
 );
 CREATE TABLE iot_events (
@@ -24,8 +24,8 @@ CREATE TABLE iot_events (
  event_time AS TO_TIMESTAMP_LTZ(`after`.observed_at,3),
  WATERMARK FOR event_time AS event_time - INTERVAL '2' SECOND
 ) WITH (
- 'connector'='kafka','topic'='iot.public.telemetry',
- 'properties.bootstrap.servers'='kafka:29092','properties.group.id'='iot-events',
+ 'connector'='kafka','topic'='iot.validated.telemetry',
+ 'properties.bootstrap.servers'='kafka:29092','properties.isolation.level'='read_committed','properties.group.id'='iot-events',
  'scan.startup.mode'='earliest-offset','format'='json'
 );
 CREATE TABLE iot_enriched (

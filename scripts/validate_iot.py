@@ -5,11 +5,13 @@ import secrets
 import time
 from validate import ROOT, ART, command, sql, http, wait_http, consume
 import requests
+from confluent_kafka import Producer
 
 def main():
-    topics=['iot.public.devices','iot.public.telemetry','__debezium-heartbeat.iot','iot.enriched','iot.alerts.velocity','iot.alerts.thermal']
+    topics=['iot.public.devices','iot.public.telemetry','__debezium-heartbeat.iot','iot.enriched','iot.alerts.velocity','iot.alerts.thermal','iot.validated.telemetry','iot.dlq']
     for topic in topics:
         command(['docker','compose','exec','-T','kafka','kafka-topics','--bootstrap-server','kafka:29092','--create','--if-not-exists','--topic',topic,'--partitions','1','--replication-factor','1'])
+    command(['docker','compose','up','-d','--build','iot-validator'])
     password=secrets.token_hex(24)
     sql(f"ALTER ROLE iot_cdc LOGIN PASSWORD '{password}';")
     config=json.loads((ROOT/'connectors/iot-cdc.json').read_text());config['database.password']=password
@@ -48,6 +50,21 @@ def main():
     sql('SET ROLE payments_writer; UPDATE telemetry SET temperature_c=96 WHERE reading_id=3; DELETE FROM telemetry WHERE reading_id=7;')
     updated=consume('iot.enriched',lambda xs:any(x['value'] and x['value']['reading_id']==3 and x['value']['temperature_c']==96 for x in xs) and any(x['key']=={'reading_id':7} and x['value'] is None for x in xs),avro=True,avro_key=True)
     (ART/'iot-updates.json').write_text(json.dumps(updated,indent=2))
+    # Actual malformed Kafka record plus physically invalid row emitted by Postgres CDC.
+    producer=Producer({'bootstrap.servers':'localhost:9092','broker.address.family':'v4'})
+    producer.produce('iot.public.telemetry',key=b'{"reading_id":1000}',value=b'{broken-json')
+    assert producer.flush(30)==0
+    sql(f"SET ROLE payments_writer; INSERT INTO telemetry VALUES (100,'sensor-safe',-300,90,{base+1250000});")
+    dlq=consume('iot.dlq',lambda xs:len(xs)>=2,settle_seconds=2)
+    assert {x['value']['reason'] for x in dlq}=={'invalid_json','temperature_out_of_range'},dlq
+    (ART/'iot-dlq.json').write_text(json.dumps(dlq,indent=2))
+    command(['docker','compose','restart','iot-validator'])
+    sql(f"SET ROLE payments_writer; INSERT INTO telemetry VALUES (101,'sensor-safe',26,90,{base+1300000});")
+    continued=consume('iot.enriched',lambda xs:any(x['value'] and x['value']['reading_id']==101 for x in xs),avro=True,avro_key=True)
+    assert not any(x['value'] and x['value']['reading_id']==100 for x in continued)
+    print('IOT DLQ: 2 invalid events quarantined; validator restarted; valid reading 101 enriched',flush=True)
+    jobs=http('GET','http://localhost:8082/jobs/overview')
+    assert all(job['state']=='RUNNING' for job in jobs['jobs']),jobs
     status=http('GET','http://localhost:8083/connectors/iot-cdc/status')
     assert all(t['state']=='RUNNING' for t in status['tasks']),status
     print('IOT: UPDATE and DELETE propagated; connector RUNNING',flush=True)
