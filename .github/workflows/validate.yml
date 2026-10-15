@@ -35,6 +35,7 @@ jobs:
           docker compose logs --no-color jobmanager taskmanager > artifacts/flink.log
           curl -sf localhost:8082/jobs/overview > artifacts/jobs.json || true
           cp -r schemas artifacts/schemas
+          curl -sf localhost:8083/connectors/payments-cdc/status > artifacts/connect-status.json || true
       - name: Teardown
         if: always()
         run: ./teardown.sh

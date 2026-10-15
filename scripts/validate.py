@@ -50,10 +50,11 @@ def consume(topic, predicate, timeout=120, avro=False):
             rows.append({'key':json.loads(msg.key()) if msg.key() else None,'value':value})
             if predicate(rows): return rows
     finally: c.close()
-    raise AssertionError(f'Timeout on {topic}: {rows}')
+    (ART/('timeout-'+topic+'.json')).write_text(json.dumps(rows,indent=2,default=str))
+    raise AssertionError(f'Timeout on {topic}: received {len(rows)} records; see timeout artifact')
 def main():
     for port,path in [(8081,'subjects'),(8083,'connectors'),(8082,'overview')]: wait_http(f'http://localhost:{port}/{path}')
-    for topic in ['payments.public.accounts','payments.public.transactions','payments.enriched','payments.alerts']:
+    for topic in ['payments.public.accounts','payments.public.transactions','payments.enriched','payments.alerts','__debezium-heartbeat.payments']:
         command(['docker','compose','exec','-T','kafka','kafka-topics','--bootstrap-server','kafka:29092','--create','--if-not-exists','--topic',topic,'--partitions','1','--replication-factor','1'])
     for role in ['payments_writer','payments_reader','payments_cdc']:
         password=secrets.token_hex(24)

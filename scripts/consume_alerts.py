@@ -20,7 +20,9 @@ def main():
     try:
         while args.max_records==0 or processed<args.max_records:
             msg=consumer.poll(30)
-            if msg is None: raise TimeoutError('No alert received in 30s')
+            if msg is None:
+                if args.max_records: raise TimeoutError('No alert received in 30s')
+                continue
             if msg.error(): raise RuntimeError(msg.error())
             key=json.loads(msg.key()); raw=msg.value()
             with db:
